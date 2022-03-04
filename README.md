@@ -1,2 +1,3 @@
-Rien encore ici
-WIP
+# Personnal website
+
+***There is nothing here yet, surely a portfolio later***

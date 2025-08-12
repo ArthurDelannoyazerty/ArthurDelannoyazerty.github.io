@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gist Scanner</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Gist Scanner</h1>
+        <p>Choose a filter, then click the button to scan the 'my-gists' repository and generate a prompt.</p>
+        
+        <div id="filter-options">
+            <fieldset>
+                <legend>File Type Filter</legend>
+                <input type="radio" id="filterAll" name="fileTypeFilter" value="all" checked>
+                <label for="filterAll">All File Types</label>
+                <br>
+                <input type="radio" id="filterPython" name="fileTypeFilter" value="python">
+                <label for="filterPython">Python Only</label>
+            </fieldset>
+        </div>
+
+        <div class="button-container" style="margin-top: 20px;">
+            <button id="scanButton">Scan Gists</button>
+            <button id="copyButton">Copy Prompt</button>
+        </div>
+
+        <p id="loadingStatus"></p>
+        <h2>LLM Prompt:</h2>
+        <pre id="output">The generated prompt will appear here...</pre>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

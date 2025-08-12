@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const filterType = document.querySelector('input[name="fileTypeFilter"]:checked').value;
         
         // Create a new EventSource to connect to our streaming API
-        eventSource = new EventSource(`/api/scan-gists?filter=${filterType}`);
+        eventSource = new EventSource(`/api/scan_gists?filter=${filterType}`);
 
         // Listen for the 'total' event
         eventSource.addEventListener('total', (event) => {

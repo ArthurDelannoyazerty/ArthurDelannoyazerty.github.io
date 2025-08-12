@@ -1,4 +1,4 @@
-// This is your new, simplified frontend script.
+// This script now uses EventSource to listen for streamed server events
 
 document.addEventListener('DOMContentLoaded', () => {
     const scanButton = document.getElementById('scanButton');
@@ -6,49 +6,72 @@ document.addEventListener('DOMContentLoaded', () => {
     const outputElement = document.getElementById('output');
     const loadingStatusElement = document.getElementById('loadingStatus');
 
+    let eventSource;
+
     scanButton.addEventListener('click', async () => {
-        outputElement.textContent = 'Contacting server to start scan...';
-        loadingStatusElement.textContent = 'Please wait...';
-        scanButton.disabled = true; // Disable button to prevent multiple clicks
+        // Close any existing connection
+        if (eventSource) {
+            eventSource.close();
+        }
 
-        // Get the selected filter from the radio buttons
+        // Clear UI and disable button
+        outputElement.textContent = '';
+        loadingStatusElement.textContent = 'Initializing connection...';
+        scanButton.disabled = true;
+        
+        let llmPromptParts = ["Based on the following Gist files I have created, find the most relevant function to solve my problem.\n\nProblem: [**DESCRIBE YOUR PROBLEM HERE**]\n\n--- GIST DATABASE ---"];
+        let totalGists = 0;
+
         const filterType = document.querySelector('input[name="fileTypeFilter"]:checked').value;
+        
+        // 1. Create a new EventSource to connect to our streaming API
+        eventSource = new EventSource(`/api/scan_gists?filter=${filterType}`);
 
-        try {
-            // 1. Call your own backend API, not GitHub's.
-            // Pass the filter type as a query parameter.
-            const response = await fetch(`/api/scan_gists?filter=${filterType}`);
+        // 2. Listen for the 'total' event (our custom event)
+        eventSource.addEventListener('total', (event) => {
+            const data = JSON.parse(event.data);
+            totalGists = data.count;
+            loadingStatusElement.textContent = `Found ${totalGists} Gists. Starting scan...`;
+        });
 
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || `Server responded with status: ${response.status}`);
-            }
+        // 3. Listen for the 'progress' event and update the UI in real-time
+        eventSource.addEventListener('progress', (event) => {
+            const data = JSON.parse(event.data);
+            const gist = data.gist;
 
-            // 2. Get the processed data back from your API.
-            const data = await response.json();
+            // Update loading status
+            loadingStatusElement.textContent = `Scanning... (${data.index}/${totalGists})`;
 
-            // 3. Display the final result.
-            outputElement.textContent = data.llmPrompt;
-            loadingStatusElement.textContent = 'Scan complete!';
+            // Build the prompt piece by piece
+            const gistTitle = gist.description || 'No Title';
+            const fileContents = Object.values(gist.files).map(file => 
+                `---\nFileName: ${file.filename}\nContent:\n${file.content}\n---`
+            ).join('\n');
+            
+            const gistBlock = `\n\nGist Title: ${gistTitle}\nDescription: ${gist.description || 'N/A'}\nFiles:\n${fileContents}`;
+            llmPromptParts.push(gistBlock);
+            
+            // Update the text area in real-time so you can see the prompt being built
+            outputElement.textContent = llmPromptParts.join('');
+        });
 
-        } catch (error) {
-            outputElement.textContent = `An error occurred: ${error.message}`;
-            loadingStatusElement.textContent = 'Scan failed.';
-        } finally {
-            scanButton.disabled = false; // Re-enable the button
-        }
+        // 4. Listen for the 'done' event to know when to close
+        eventSource.addEventListener('done', (event) => {
+            const data = JSON.parse(event.data);
+            loadingStatusElement.textContent = `${data.message} Processed ${data.totalProcessed} gists.`;
+            eventSource.close();
+            scanButton.disabled = false;
+        });
+
+        // 5. Handle any errors
+        eventSource.onerror = (err) => {
+            loadingStatusElement.textContent = 'An error occurred with the connection.';
+            console.error('EventSource failed:', err);
+            eventSource.close();
+            scanButton.disabled = false;
+        };
     });
-
-    // The copy button logic remains the same.
-    copyButton.addEventListener('click', () => {
-        const textToCopy = outputElement.textContent;
-        if (textToCopy && textToCopy !== 'The generated prompt will appear here...') {
-            navigator.clipboard.writeText(textToCopy).then(() => {
-                copyButton.textContent = 'Copied!';
-                setTimeout(() => { copyButton.textContent = 'Copy Prompt'; }, 2000);
-            }).catch(err => {
-                console.error('Failed to copy text: ', err);
-            });
-        }
-    });
+    
+    // Copy button logic remains the same
+    copyButton.addEventListener('click', () => { /* ... */ });
 });

@@ -9,18 +9,16 @@
 <body>
     <div class="container">
         <h1>Gist Scanner</h1>
-        <p>Choose a filter, then click the button to scan the 'my-gists' repository and generate a prompt.</p>
+        <p>Choose a filter, then click Scan to securely generate a prompt using a backend function.</p>
         
-        <div id="filter-options">
-            <fieldset>
-                <legend>File Type Filter</legend>
-                <input type="radio" id="filterAll" name="fileTypeFilter" value="all" checked>
-                <label for="filterAll">All File Types</label>
-                <br>
-                <input type="radio" id="filterPython" name="fileTypeFilter" value="python">
-                <label for="filterPython">Python Only</label>
-            </fieldset>
-        </div>
+        <fieldset>
+            <legend>File Type Filter</legend>
+            <input type="radio" id="filterAll" name="fileTypeFilter" value="all" checked>
+            <label for="filterAll">All File Types</label>
+            <br>
+            <input type="radio" id="filterPython" name="fileTypeFilter" value="python">
+            <label for="filterPython">Python Only</label>
+        </fieldset>
 
         <div class="button-container" style="margin-top: 20px;">
             <button id="scanButton">Scan Gists</button>

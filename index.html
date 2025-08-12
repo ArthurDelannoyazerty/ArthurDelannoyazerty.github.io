@@ -11,36 +11,34 @@
     <div class="site-container">
         <!-- Common Side Navigation -->
         <nav class="side-nav">
-            <h2>My Website</h2>
+            <h2>Arthur Delannoy</h2>
             <ul>
                 <li><a href="index.html">Home</a></li>
-                <li><a href="scanner.html">Gist Scanner</a></li>
+                <li><a href="gist_scanner.html">Gist Scanner</a></li>
             </ul>
         </nav>
 
         <!-- Main Content Area -->
         <main class="main-content">
-            <div id="content"><p>Loading content from GitHub...</p></div>
+            <div class="content-wrapper">
+                <div id="content"><p>Loading content from GitHub...</p></div>
+            </div>
         </main>
     </div>
 
     <script>
-        // Your existing script to fetch the GitHub profile README remains the same
         document.addEventListener('DOMContentLoaded', async () => {
             const contentElement = document.getElementById('content');
             try {
-                // NOTE: This now requires a backend call to be secure, but for simplicity
-                // of this example, we'll keep the unauthenticated call.
-                // For production, you would create an API route for this too.
                 const response = await fetch('https://api.github.com/repos/ArthurDelannoyazerty/ArthurDelannoyazerty/contents/README.md', {
                     headers: { 'Accept': 'application/vnd.github.v3.raw' }
                 });
-                if (!response.ok) throw new Error('Failed to fetch README');
+                if (!response.ok) throw new Error('Failed to fetch README from GitHub');
                 
                 const markdown = await response.text();
                 contentElement.innerHTML = marked.parse(markdown);
             } catch (error) {
-                contentElement.innerHTML = `<p>Error loading content: ${error.message}. The GitHub API rate limit may have been reached. Refreshing in an hour might help.</p>`;
+                contentElement.innerHTML = `<p>Error loading content: ${error.message}.</p>`;
             }
         });
     </script>

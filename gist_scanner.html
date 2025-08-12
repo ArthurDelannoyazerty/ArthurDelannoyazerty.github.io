@@ -10,35 +10,37 @@
     <div class="site-container">
         <!-- Common Side Navigation -->
         <nav class="side-nav">
-            <h2>My Website</h2>
+            <h2>Arthur Delannoy</h2>
             <ul>
                 <li><a href="index.html">Home</a></li>
-                <li><a href="scanner.html">Gist Scanner</a></li>
+                <li><a href="gist_scanner.html">Gist Scanner</a></li>
             </ul>
         </nav>
 
         <!-- Main Content Area -->
         <main class="main-content">
-            <h1>Gist Scanner</h1>
-            <p>Choose a filter, then click Scan to securely generate a prompt using a backend function.</p>
-            
-            <fieldset>
-                <legend>File Type Filter</legend>
-                <input type="radio" id="filterAll" name="fileTypeFilter" value="all" checked>
-                <label for="filterAll">All File Types</label>
-                <br>
-                <input type="radio" id="filterPython" name="fileTypeFilter" value="python">
-                <label for="filterPython">Python Only</label>
-            </fieldset>
+            <div class="content-wrapper">
+                <h1>Gist Scanner</h1>
+                <p>Choose a filter, then click Scan to securely generate a prompt using a backend function.</p>
+                
+                <fieldset>
+                    <legend>File Type Filter</legend>
+                    <input type="radio" id="filterAll" name="fileTypeFilter" value="all" checked>
+                    <label for="filterAll">All File Types</label>
+                    <br>
+                    <input type="radio" id="filterPython" name="fileTypeFilter" value="python">
+                    <label for="filterPython">Python Only</label>
+                </fieldset>
 
-            <div class="button-container" style="margin-top: 20px;">
-                <button id="scanButton">Scan Gists</button>
-                <button id="copyButton">Copy Prompt</button>
+                <div class="button-container" style="margin-top: 20px;">
+                    <button id="scanButton">Scan Gists</button>
+                    <button id="copyButton">Copy Prompt</button>
+                </div>
+
+                <p id="loadingStatus"></p>
+                <h2>LLM Prompt:</h2>
+                <pre id="output">The generated prompt will appear here...</pre>
             </div>
-
-            <p id="loadingStatus"></p>
-            <h2>LLM Prompt:</h2>
-            <pre id="output">The generated prompt will appear here...</pre>
         </main>
     </div>
     <script src="script.js"></script>

@@ -1,37 +1,46 @@
-/* General Body Styles */
-body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
-    line-height: 1.6;
-    background-color: #fdfdfd;
-    color: #333;
-    margin: 0;
-    padding: 0;
+/* --- 1. Modern Foundation & Color Scheme --- */
+:root {
+    --bg-color: #f8f9fa;
+    --surface-color: #ffffff;
+    --text-color: #212529;
+    --muted-text-color: #6c757d;
+    --primary-color: #007bff;
+    --border-color: #dee2e6;
+    --nav-width: 240px; /* Control navigation width from one place */
 }
 
-/* Main Layout Container using Flexbox */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.7;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+}
+
+/* --- 2. Main Layout & Spacing --- */
 .site-container {
     display: flex;
-    min-height: 100vh;
 }
 
-/* --- Left Side Navigation Menu --- */
+/* --- 3. Responsive Side Navigation --- */
 .side-nav {
-    width: 220px; /* Fixed width for the navigation menu */
-    background-color: #f5f5f5;
-    border-right: 1px solid #e1e1e1;
-    padding: 20px;
-    height: 100vh; /* Make it full height */
-    position: fixed; /* Fix it to the left */
+    width: var(--nav-width);
+    height: 100vh;
+    position: fixed;
     top: 0;
     left: 0;
+    background-color: var(--surface-color);
+    border-right: 1px solid var(--border-color);
+    padding: 30px;
+    box-sizing: border-box; /* Ensures padding is included in the width */
+    transition: transform 0.3s ease;
 }
 
 .side-nav h2 {
-    font-size: 1.2em;
+    font-size: 1.4em;
     font-weight: 600;
-    color: #333;
+    margin: 0 0 30px 0;
     border-bottom: none;
-    margin-top: 0;
 }
 
 .side-nav ul {
@@ -42,52 +51,108 @@ body {
 
 .side-nav li a {
     display: block;
-    padding: 10px 15px;
-    color: #007bff;
+    padding: 12px 16px;
+    color: var(--muted-text-color);
     text-decoration: none;
-    border-radius: 5px;
+    border-radius: 6px;
+    font-weight: 500;
     transition: background-color 0.2s, color 0.2s;
 }
 
 .side-nav li a:hover {
-    background-color: #e9ecef;
+    background-color: #eef5ff;
+    color: var(--primary-color);
     text-decoration: none;
 }
 
-/* --- Main Content Area --- */
+/* --- 4. Main Content Area with Better Spacing --- */
 .main-content {
-    flex-grow: 1; /* Allows the content to take up the remaining space */
-    padding: 20px 40px;
-    margin-left: 220px; /* Crucial: This pushes the content to the right of the nav menu */
+    flex-grow: 1;
+    margin-left: var(--nav-width); /* Push content to the right of the nav */
+    padding: 40px; /* Adds space from the menu and screen edges */
 }
 
-/* --- Re-styling existing elements for the new layout --- */
+.content-wrapper {
+    max-width: 900px;
+    margin: 0 auto; /* Center the content within the main area */
+    background-color: var(--surface-color);
+    padding: 40px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
 h1, h2 {
-    border-bottom: 1px solid #eee;
-    padding-bottom: 10px;
-    font-weight: 500;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 12px;
+    font-weight: 600;
 }
 
-button {
-    padding: 10px 20px;
+/* --- 5. Fix for Markdown Table Styles --- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 0.9em;
+}
+
+th, td {
+    padding: 12px 15px;
+    border: 1px solid var(--border-color);
+    text-align: left;
+}
+
+thead th {
+    background-color: var(--bg-color);
+    font-weight: 600;
+}
+
+tbody tr:nth-of-type(even) {
+    background-color: var(--bg-color);
+}
+
+/* --- 6. Other UI Elements --- */
+button { /* Modern button styles */
+    padding: 12px 22px;
     font-size: 16px;
+    font-weight: 500;
     cursor: pointer;
-    background-color: #333;
-    color: #fff;
     border: none;
-    border-radius: 5px;
-    transition: background-color 0.2s;
+    border-radius: 6px;
+    transition: background-color 0.2s, transform 0.1s;
+    background-color: #212529;
+    color: #fff;
 }
+button:hover { background-color: #495057; }
+button:active { transform: scale(0.98); }
 
-button:hover {
-    background-color: #555;
-}
-
-/* Other existing styles from your previous CSS */
-.button-container { display: flex; gap: 10px; align-items: center; }
-#output { margin-top: 20px; white-space: pre-wrap; background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 5px; padding: 15px; font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px; max-height: 400px; overflow-y: auto; }
-#loadingStatus { font-style: italic; color: #777; }
-#copyButton { background-color: #007bff; }
+#copyButton { background-color: var(--primary-color); }
 #copyButton:hover { background-color: #0056b3; }
-fieldset { border: 1px solid #ddd; border-radius: 5px; padding: 10px 15px; margin-bottom: 10px; }
-legend { padding: 0 5px; color: #555; }
+
+#output { font-size: 14px; }
+fieldset { border: 1px solid var(--border-color); }
+
+/* --- 7. Responsive Design: The Menu Adapts Here --- */
+@media (max-width: 900px) {
+    .site-container {
+        flex-direction: column; /* Stack nav and content vertically */
+    }
+
+    .side-nav {
+        position: relative; /* Un-fix the nav */
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+    }
+    
+    .side-nav ul {
+        display: flex; /* Make nav items horizontal */
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .main-content {
+        margin-left: 0; /* Remove the margin */
+        padding: 20px;
+    }
+}

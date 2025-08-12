@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             // 1. Call your own backend API, not GitHub's.
             // Pass the filter type as a query parameter.
-            const response = await fetch(`/api/scan-gists?filter=${filterType}`);
+            const response = await fetch(`/api/scan_gists?filter=${filterType}`);
 
             if (!response.ok) {
                 const errorData = await response.json();

@@ -7,6 +7,40 @@ document.addEventListener('DOMContentLoaded', () => {
     let eventSource;
     let llmPromptParts = [];
 
+    function fallbackCopyTextToClipboard(text, button) {
+        // 1. Create a temporary textarea element
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        
+        // 2. Make the textarea invisible and add it to the page
+        textArea.style.position = "fixed";
+        textArea.style.top = 0;
+        textArea.style.left = 0;
+        textArea.style.width = "2em";
+        textArea.style.height = "2em";
+        textArea.style.padding = 0;
+        textArea.style.border = "none";
+        textArea.style.outline = "none";
+        textArea.style.boxShadow = "none";
+        textArea.style.background = "transparent";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        
+        // 3. Select the text and execute the copy command
+        textArea.select();
+        try {
+            document.execCommand('copy');
+            // If successful, update the button text
+            button.textContent = 'Copied!';
+            setTimeout(() => { button.textContent = 'Copy Prompt'; }, 2000);
+        } catch (err) {
+            console.error('Fallback copy method failed', err);
+        }
+        
+        // 4. Clean up by removing the textarea
+        document.body.removeChild(textArea);
+    }
+
     scanButton.addEventListener('click', async () => {
         if (eventSource) {
             eventSource.close();
@@ -67,14 +101,22 @@ document.addEventListener('DOMContentLoaded', () => {
     
     copyButton.addEventListener('click', () => {
         const textToCopy = llmPromptParts.join('');
-        
-        if (textToCopy && llmPromptParts.length > 1) { 
-            navigator.clipboard.writeText(textToCopy).then(() => {
-                copyButton.textContent = 'Copied!';
-                setTimeout(() => { copyButton.textContent = 'Copy Prompt'; }, 2000);
-            }).catch(err => {
-                console.error('Failed to copy text: ', err);
-            });
+        if (!textToCopy || llmPromptParts.length <= 1) return;
+
+        // Try the modern `navigator.clipboard` API first
+        if (!navigator.clipboard) {
+            fallbackCopyTextToClipboard(textToCopy, copyButton);
+            return;
         }
+
+        navigator.clipboard.writeText(textToCopy).then(() => {
+            // If successful, update the button text
+            copyButton.textContent = 'Copied!';
+            setTimeout(() => { copyButton.textContent = 'Copy Prompt'; }, 2000);
+        }).catch((err) => {
+            // If it fails (as it does in Firefox), log the error and use the fallback
+            console.warn('Modern clipboard API failed. Using fallback. Error:', err);
+            fallbackCopyTextToClipboard(textToCopy, copyButton);
+        });
     });
 });

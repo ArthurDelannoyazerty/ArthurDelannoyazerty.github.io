@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     copyButton.addEventListener('click', () => {
-        const textToCopy = llmPromptParts.join('');
+        const textToCopy = document.getElementById('output').textContent;
         if (textToCopy && llmPromptParts.length > 1) {
             navigator.clipboard.writeText(textToCopy).then(() => {
                 copyButton.textContent = 'Copied!';

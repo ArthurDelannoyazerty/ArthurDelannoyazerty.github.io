@@ -62,7 +62,6 @@ document.addEventListener('DOMContentLoaded', () => {
             loadingStatusElement.textContent = `Found ${totalGists} Gists. Starting scan...`;
         });
 
-        // --- THIS IS THE MODIFIED SECTION ---
         eventSource.addEventListener('progress', (event) => {
             const data = JSON.parse(event.data);
             const gist = data.gist;
@@ -82,7 +81,6 @@ document.addEventListener('DOMContentLoaded', () => {
             llmPromptParts.push(gistBlock);
             outputElement.textContent = llmPromptParts.join('');
         });
-        // --- END OF MODIFIED SECTION ---
 
         eventSource.addEventListener('done', (event) => {
             const data = JSON.parse(event.data);
@@ -118,5 +116,32 @@ document.addEventListener('DOMContentLoaded', () => {
             console.warn('Modern clipboard API failed. Using fallback. Error:', err);
             fallbackCopyTextToClipboard(textToCopy, copyButton);
         });
+    });
+
+    downloadButton.addEventListener('click', () => {
+        const textToDownload = llmPromptParts.join('');
+        
+        // Ensure there is content to download
+        if (!textToDownload || llmPromptParts.length <= 1) {
+            alert("There is no prompt to download. Please run a scan first.");
+            return;
+        }
+
+        // 1. Create a Blob (a file-like object) from the text
+        const blob = new Blob([textToDownload], { type: 'text/plain;charset=utf-8' });
+
+        // 2. Create a temporary URL for the Blob
+        const url = URL.createObjectURL(blob);
+
+        // 3. Create a temporary anchor (`<a>`) element to trigger the download
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'gist_prompt.txt'; // The default filename for the download
+
+        // 4. Programmatically click the link to start the download, then clean up
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url); // Free up browser memory
     });
 });

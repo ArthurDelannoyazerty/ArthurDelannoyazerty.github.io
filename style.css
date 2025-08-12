@@ -128,6 +128,15 @@ button:active { transform: scale(0.98); }
 #copyButton { background-color: var(--primary-color); }
 #copyButton:hover { background-color: #0056b3; }
 
+
+#downloadButton {
+    background-color: #28a745; /* A distinct green color */
+}
+
+#downloadButton:hover {
+    background-color: #218838;
+}
+
 #output { font-size: 14px; }
 fieldset { border: 1px solid var(--border-color); }
 

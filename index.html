@@ -5,31 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Using a CDN for the Markdown to HTML converter -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
-    <div class="container">
-        <div id="content"><p>Loading content from GitHub...</p></div>
-        <hr>
-        <a href="gist_scanner.html">Go to Gist Scanner</a>
+    <div class="site-container">
+        <!-- Common Side Navigation -->
+        <nav class="side-nav">
+            <h2>My Website</h2>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="scanner.html">Gist Scanner</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <div id="content"><p>Loading content from GitHub...</p></div>
+        </main>
     </div>
 
     <script>
+        // Your existing script to fetch the GitHub profile README remains the same
         document.addEventListener('DOMContentLoaded', async () => {
             const contentElement = document.getElementById('content');
             try {
-                // Fetch the README from your GitHub profile repository
+                // NOTE: This now requires a backend call to be secure, but for simplicity
+                // of this example, we'll keep the unauthenticated call.
+                // For production, you would create an API route for this too.
                 const response = await fetch('https://api.github.com/repos/ArthurDelannoyazerty/ArthurDelannoyazerty/contents/README.md', {
                     headers: { 'Accept': 'application/vnd.github.v3.raw' }
                 });
                 if (!response.ok) throw new Error('Failed to fetch README');
                 
                 const markdown = await response.text();
-                // Convert Markdown to HTML using the marked library
                 contentElement.innerHTML = marked.parse(markdown);
             } catch (error) {
-                contentElement.innerHTML = `<p>Error loading content: ${error.message}</p>`;
+                contentElement.innerHTML = `<p>Error loading content: ${error.message}. The GitHub API rate limit may have been reached. Refreshing in an hour might help.</p>`;
             }
         });
     </script>

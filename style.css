@@ -1,3 +1,4 @@
+/* General Body Styles */
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
     line-height: 1.6;
@@ -7,29 +8,64 @@ body {
     padding: 0;
 }
 
-.container {
-    max-width: 800px;
-    margin: 40px auto;
-    padding: 20px 40px;
-    background-color: #fff;
-    border: 1px solid #e1e1e1;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+/* Main Layout Container using Flexbox */
+.site-container {
+    display: flex;
+    min-height: 100vh;
 }
 
+/* --- Left Side Navigation Menu --- */
+.side-nav {
+    width: 220px; /* Fixed width for the navigation menu */
+    background-color: #f5f5f5;
+    border-right: 1px solid #e1e1e1;
+    padding: 20px;
+    height: 100vh; /* Make it full height */
+    position: fixed; /* Fix it to the left */
+    top: 0;
+    left: 0;
+}
+
+.side-nav h2 {
+    font-size: 1.2em;
+    font-weight: 600;
+    color: #333;
+    border-bottom: none;
+    margin-top: 0;
+}
+
+.side-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.side-nav li a {
+    display: block;
+    padding: 10px 15px;
+    color: #007bff;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.side-nav li a:hover {
+    background-color: #e9ecef;
+    text-decoration: none;
+}
+
+/* --- Main Content Area --- */
+.main-content {
+    flex-grow: 1; /* Allows the content to take up the remaining space */
+    padding: 20px 40px;
+    margin-left: 220px; /* Crucial: This pushes the content to the right of the nav menu */
+}
+
+/* --- Re-styling existing elements for the new layout --- */
 h1, h2 {
     border-bottom: 1px solid #eee;
     padding-bottom: 10px;
     font-weight: 500;
-}
-
-a {
-    color: #007bff;
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
 }
 
 button {
@@ -47,34 +83,11 @@ button:hover {
     background-color: #555;
 }
 
-.button-container {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-
-#output {
-    margin-top: 20px;
-    white-space: pre-wrap;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 15px;
-    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
-    font-size: 14px;
-    max-height: 400px;
-    overflow-y: auto;
-}
-
-#loadingStatus {
-    font-style: italic;
-    color: #777;
-}
-
-#copyButton {
-    background-color: #007bff;
-}
-
-#copyButton:hover {
-    background-color: #0056b3;
-}
+/* Other existing styles from your previous CSS */
+.button-container { display: flex; gap: 10px; align-items: center; }
+#output { margin-top: 20px; white-space: pre-wrap; background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 5px; padding: 15px; font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; font-size: 14px; max-height: 400px; overflow-y: auto; }
+#loadingStatus { font-style: italic; color: #777; }
+#copyButton { background-color: #007bff; }
+#copyButton:hover { background-color: #0056b3; }
+fieldset { border: 1px solid #ddd; border-radius: 5px; padding: 10px 15px; margin-bottom: 10px; }
+legend { padding: 0 5px; color: #555; }
